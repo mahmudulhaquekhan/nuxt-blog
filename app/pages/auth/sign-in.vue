@@ -1,39 +1,27 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const email = ref('');
-const password = ref('');
+const { loggedIn, user, fetch: refreshSession } = useUserSession();
 
-const signInUser = async () => {
-    try {
-      const response = await fetch('https://api.mohammudullaha.com/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email.value,
-          password: password.value,
-        }),
-      });
+const credentials = reactive({
+  email: '',
+  password: '',
+})
 
-      const result = await response.json();
 
-      if (response.status === 200) {
-        alert(result.message || 'Sign-in successful!');
-        localStorage.setItem('token', result.token);
-        // router.push({ path: `/post` })
-      } 
-      else {
-        alert(result.message || 'Sign-in failed. Please try again.');
-      }
-    } 
-    catch (error) {
-      console.error('Sign-in error:', error);
-      alert('An unexpected error occurred. Please try again.');
-    }
-  }
+async function login() {
+  $fetch('/api/auth/login', {
+    method: 'POST',
+    body: credentials
+  })
+  .then(async () => {
+    // Refresh the session on client-side and redirect to the home page
+    await refreshSession()
+    await navigateTo('/')
+  })
+  .catch(() => alert('Bad credentials'))
+}
+
 </script>
 
 <template>
@@ -46,11 +34,11 @@ const signInUser = async () => {
       </div>
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" method="POST" @submit.prevent="signInUser">
+        <form class="space-y-6" method="POST" @submit.prevent="login">
           <div>
             <label for="email" class="block text-sm/6 font-medium text-gray-100">Email address</label>
             <div class="mt-2">
-              <input type="email" name="email" id="email" autocomplete="email" v-model="email" required
+              <input type="email" name="email" id="email" autocomplete="email" v-model="credentials.email" required
                 class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
             </div>
           </div>
@@ -63,7 +51,7 @@ const signInUser = async () => {
               </div>
             </div>
             <div class="mt-2">
-              <input type="password" name="password" id="password" autocomplete="current-password" v-model="password" required
+              <input type="password" name="password" id="password" autocomplete="current-password" v-model="credentials.password" required
                 class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
             </div>
           </div>
