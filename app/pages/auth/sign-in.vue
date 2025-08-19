@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive } from 'vue'
 
 const { loggedIn, user, fetch: refreshSession } = useUserSession();
 
@@ -14,12 +14,12 @@ async function login() {
     method: 'POST',
     body: credentials
   })
-  .then(async () => {
-    // Refresh the session on client-side and redirect to the home page
-    await refreshSession()
-    await navigateTo('/')
-  })
-  .catch(() => alert('Bad credentials'))
+    .then(async () => {
+      // Refresh the session on client-side and redirect to the home page
+      await refreshSession()
+      await navigateTo('/')
+    })
+    .catch(() => alert('Bad credentials'))
 }
 
 </script>
@@ -51,7 +51,8 @@ async function login() {
               </div>
             </div>
             <div class="mt-2">
-              <input type="password" name="password" id="password" autocomplete="current-password" v-model="credentials.password" required
+              <input type="password" name="password" id="password" autocomplete="current-password"
+                v-model="credentials.password" required
                 class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
             </div>
           </div>
@@ -65,8 +66,9 @@ async function login() {
 
         <p class="mt-10 text-center text-sm/6 text-gray-400">
           Not a member?
-          {{ ' ' }}
-          <a href="#" class="font-semibold text-indigo-400 hover:text-indigo-300">Sign Up</a>
+          <NuxtLink to="/auth/sign-up" class="font-semibold text-indigo-400 hover:text-indigo-300">
+            Sign Up
+          </NuxtLink>
         </p>
       </div>
     </div>
