@@ -71,6 +71,13 @@ function logout() {
                 active-class="font-semibold text-blue-600"
             >About</NuxtLink>
 
+            <template v-if="loggedIn">
+                <NuxtLink
+                    to="/dashboard"
+                    class="block px-3 py-2 rounded text-gray-700 hover:bg-gray-100 md:mx-2"
+                    active-class="font-semibold text-blue-600"
+                >Dashboard</NuxtLink>
+            </template>
             <template v-if="!loggedIn">
                 <NuxtLink
                     to="/auth/sign-in"

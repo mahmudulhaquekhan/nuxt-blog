@@ -10,6 +10,12 @@ export default defineNuxtConfig({
     apiUrl: process.env.API_URL as string,
   },
 
+  vue: {
+    compilerOptions: {
+      comments: true
+    }
+  },
+
   vite: {
     plugins: [
       tailwindcss(),

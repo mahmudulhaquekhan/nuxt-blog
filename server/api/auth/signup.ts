@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     }).catch((error:any) => {
         throw createError({
             statusCode: error?.response?.status || 500,
-            message: error?.data?.message || "Signup failed",
+            data: error?.data?.errors || {}
         }) 
     });
 
