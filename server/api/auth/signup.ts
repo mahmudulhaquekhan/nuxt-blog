@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
     }).then((data) => {
         return data
     }).catch((error:any) => {
+        console.log('error', error)
         throw createError({
             statusCode: error?.response?.status || 500,
             data: error?.data?.errors || {}

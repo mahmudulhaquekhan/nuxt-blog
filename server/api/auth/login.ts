@@ -23,10 +23,10 @@ export default defineEventHandler(async (event) => {
         }   
     }).then((data) => {
         return data
-    }).catch((error) => {
+    }).catch((error:any) => {
         throw createError({
-            statusCode: 401,
-            message: 'Bad credentials'
+            statusCode: error?.response?.status || 500,
+            data: error?.data?.errors || {}
         }) 
     });
 

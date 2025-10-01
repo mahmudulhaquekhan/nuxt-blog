@@ -1,4 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
+const { user, loggedIn } = useUserSession();
+
+function logout() {
+
+    $fetch('/api/auth/logout', {
+        method: 'POST'
+    })
+    .then(() => {
+        // Clear the session and redirect to the login page
+        useUserSession().clear();
+        navigateTo('/auth/sign-in');
+    })
+    .catch(() => alert('Logout failed'));
+
+}
 
 </script>
 
@@ -23,7 +40,7 @@
         </NuxtLink>
       </nav>
       <div class="p-4 border-t border-gray-300">
-        <button class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
+        <button class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700" @click="logout">
           Logout
         </button>
       </div>
@@ -44,7 +61,7 @@
         <div class="flex items-center gap-4">
           <input type="text" placeholder="Search..."
             class="hidden md:block border rounded-lg px-3 py-1.5 text-sm" />
-          <img src="https://via.placeholder.com/32" alt="user"
+          <img src="https://i.pravatar.cc/32?img=1" alt="user"
             class="w-8 h-8 rounded-full border" />
         </div>
       </header>

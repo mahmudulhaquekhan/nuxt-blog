@@ -24,7 +24,6 @@ function logout() {
 
     showDropdown.value = false;
 }
-
 </script>
 
 <template>
@@ -61,7 +60,7 @@ function logout() {
                 exact
             >Home</NuxtLink>
             <NuxtLink
-                to="/blog/blogs"
+                to="/blog"
                 class="block px-3 py-2 rounded text-gray-700 hover:bg-gray-100 md:mx-2"
                 active-class="font-semibold text-blue-600"
             >Blog</NuxtLink>
