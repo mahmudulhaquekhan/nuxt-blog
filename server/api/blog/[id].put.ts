@@ -7,6 +7,10 @@ export default defineEventHandler(async (event) => {
   const { secure } = await getUserSession(event);
   const token = secure?.apiToken;
 
+  const body = await readBody(event);
+  const { title, description } = body;
+
+
   const { id } = event.context.params || {};
 
   if (!token) {
@@ -23,5 +27,16 @@ export default defineEventHandler(async (event) => {
       'Authorization': `Bearer ${token}`,
     },
     method: 'PUT',
-  });
+    body: {
+        title : title ?? '',
+        description: description ?? ''
+    }
+  }).then((data) => {
+        return data
+    }).catch((error:any) => {
+        throw createError({
+            statusCode: error?.response?.status || 500,
+            data: error?.data?.errors || {}
+        }) 
+    });
 });
