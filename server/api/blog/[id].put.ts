@@ -22,6 +22,6 @@ export default defineEventHandler(async (event) => {
       'Accept': 'application/json',
       'Authorization': `Bearer ${token}`,
     },
-    method: 'GET',
+    method: 'PUT',
   });
 });
