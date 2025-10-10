@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import AddCommentModal from '~/components/blogs/comment/AddCommentModal.vue';
 import CreateBlogModal from '~/components/blogs/CreateBlogModal.vue';
 import useModal from '~/composables/ui/modal/modal';
-import Comment from './blog/comment.vue';
+import Comment from '~/components/blogs/comment/Comment.vue';
 
 useHead({
     title: 'Dashboard - Blogs',
@@ -85,18 +85,18 @@ const addComment = useModal({
             <p class="mt-2 mb-4 line-clamp-3 text-sm text-gray-700">
                 {{ post.description }}
             </p>
-            <image v-if="post.image" :src="post.image" alt="Post Image" class="w-full" />
+            <img v-if="post.image" :src="post.image" alt="Post Image" class="w-full" />
             <div class="flex justify-end items-center w-full">
                 <button
-                    class="bg-green-500 text-white gap-1 px-4 py-2 mt-2 rounded hover:bg-green-600 transition" @click="addComment.show()">
+                    class="bg-green-500 text-white gap-1 px-4 py-2 mt-2 rounded hover:bg-green-600 transition" @click="addComment.show(post.id)">
                     Add Comment
                 </button>
             </div>
-            <Comment />
+            <Comment :post-id="post.id" />
         </article>
     </div>
 
-    <CreateBlogModal @created="() => refresh()" />
+    <CreateBlogModal @created="() => refreshNuxtData()" />
 
-    <AddCommentModal @created="() => refresh()" />
+    <AddCommentModal @created="() => refreshNuxtData()" />
 </template>

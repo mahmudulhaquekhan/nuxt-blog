@@ -7,6 +7,8 @@ const modal = useModal({
     id: 'AddCommentModal',
 })
 
+const postId = computed<number>(() => modal.getData());
+
 const emit = defineEmits<{
     created: []
 }>()
@@ -34,7 +36,7 @@ const submitForm = async () => {
         description: null
     };
 
-    await $fetch('/api/blog/comment/comment', {
+    await $fetch(`/api/blog/${postId.value}/comment/comment`, {
         method: 'POST',
         body: form.value
     })
@@ -73,6 +75,7 @@ const submitForm = async () => {
         @close="modal.close()"
         title="Post a Comment"
     >
+        {{ postId }}
         <form
             @submit.prevent="submitForm"
             method="post"
