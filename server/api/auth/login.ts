@@ -11,7 +11,15 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const { email, password } = body;
 
-    const res = await $fetch(url('login'), {
+    const res = await $fetch<{
+        user: {
+            name: string;
+            email: string;
+            profile_picture: string;
+        },
+        token: string,
+        message: 'Login successful'
+    }>(url('login'), {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -32,8 +40,13 @@ export default defineEventHandler(async (event) => {
 
 
     if(res) {
+
         await setUserSession(event, {
-            user: res.user,
+            user: {
+                name: res.user.name,
+                email: res.user.email,
+                profile_picture: res.user.profile_picture,
+            },
             secure: {
                 apiToken: res.token,
             },

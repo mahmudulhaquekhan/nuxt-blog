@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import Modal from '~/components/ui/modal/Modal.vue';
 import useModal from '~/composables/ui/modal/modal';
-import Modal from '../ui/modal/Modal.vue';
-
 
 const modal = useModal({
-    id: 'CreateBlogModal',
+    id: 'AddCommentModal',
 })
 
 const emit = defineEmits<{
@@ -13,12 +12,14 @@ const emit = defineEmits<{
 }>()
 
 const form = ref({
-    title: '',
+    name: '',
+    email: '',
     description: ''
 });
 
 const errors = ref({
-    title: null as string | null,
+    name: null as string | null,
+    email: null as string | null,
     description: null as string | null,
 });
 
@@ -28,21 +29,23 @@ const submitForm = async () => {
     processing.value = true;
 
     errors.value = {
-        title: null,
-        description: null,
+        name: null,
+        email: null,
+        description: null
     };
 
-    await $fetch('/api/blog/posts', {
+    await $fetch('/api/blog/comment/comment', {
         method: 'POST',
         body: form.value
     })
     .then(() => {
         modal.close();
         form.value = {
-            title: '',
+            name: '',
+            email: '',
             description: ''
         };
-
+        
         emit('created');
 
     })
@@ -51,7 +54,8 @@ const submitForm = async () => {
 
         if(errorData) {
             errors.value = {
-                title: errorData.title ? errorData.title[0] : null,
+                name: errorData.name ? errorData.name[0] : null,
+                email: errorData.email ? errorData.email[0] : null,
                 description: errorData.description ? errorData.description[0] : null,
             }
         }
@@ -67,7 +71,7 @@ const submitForm = async () => {
     <Modal
         :show="modal.status.value"
         @close="modal.close()"
-        title="Create New Blog Post"
+        title="Post a Comment"
     >
         <form
             @submit.prevent="submitForm"
@@ -76,18 +80,34 @@ const submitForm = async () => {
         >
             <div>
                 <label
-                    for="title"
+                    for="name"
                     class="block text-sm font-medium text-gray-700"
-                >Title</label> 
+                >Name</label> 
                 <input
                     type="text"
-                    id="title"
-                    name="title"
+                    id="name"
+                    name="name"
                     class="p-2 block w-full rounded-md border-gray-300 border focus:border-blue-500 focus:ring-blue-500"
-                    v-model="form.title"
+                    v-model="form.name"
                 />
 
-                <p v-if="errors.title" class="text-sm text-red-600 mt-1">{{ errors.title }}</p>
+                <p v-if="errors.name" class="text-sm text-red-600 mt-1">{{ errors.name }}</p>
+            </div>
+
+            <div>
+                <label
+                    for="email"
+                    class="block text-sm font-medium text-gray-700"
+                >Email</label> 
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="p-2 block w-full rounded-md border-gray-300 border focus:border-blue-500 focus:ring-blue-500"
+                    v-model="form.email"
+                />
+
+                <p v-if="errors.name" class="text-sm text-red-600 mt-1">{{ errors.name }}</p>
             </div>
 
             <div>
@@ -98,7 +118,7 @@ const submitForm = async () => {
                 <textarea
                     id="description"
                     name="description"
-                    rows="4"
+                    rows="2"
                     class="p-2 block w-full rounded-md border-gray-300 border focus:border-blue-500 focus:ring-blue-500"
                     v-model="form.description"
                 ></textarea>
@@ -111,7 +131,7 @@ const submitForm = async () => {
                     type="submit"
                     class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Create Post
+                    Post Comment
                 </button>
             </div>
         </form>

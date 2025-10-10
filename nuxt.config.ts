@@ -22,5 +22,8 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: ['nuxt-auth-utils'],
+  modules: [
+    'nuxt-auth-utils',
+    '@nuxt/ui'
+  ],
 })

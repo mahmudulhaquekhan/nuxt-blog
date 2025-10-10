@@ -100,9 +100,15 @@ function logout() {
                         v-if="showDropdown"
                         class="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10"
                     >
+                        <NuxtLink
+                            to="/profile" @click="showDropdown = false"
+                            class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                        >
+                            Profile
+                        </NuxtLink>
                         <button
-                            class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                            @click="logout"
+                            class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                            @click="logout" 
                         >Logout</button>
                     </div>
                 </div>

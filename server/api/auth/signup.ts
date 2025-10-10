@@ -7,7 +7,14 @@ export default defineEventHandler(async (event) => {
 
     const { url } = useUrl(config);
 
-    const res = await $fetch(url('signup'), {
+    const res = await $fetch<{
+        user: {
+            name: string;
+            email: string;
+            profile_picture: string;
+        },
+        token: string,
+    }>(url('signup'), {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -27,7 +34,11 @@ export default defineEventHandler(async (event) => {
 
     if(res) {
         await setUserSession(event, {
-            user: res.user,
+            user: {
+                name: res.user.name,
+                email: res.user.email,
+                profile_picture: res.user.profile_picture,
+            },
             secure: {
                 apiToken: res.token,
             },
