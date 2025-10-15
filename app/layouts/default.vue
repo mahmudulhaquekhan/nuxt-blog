@@ -5,7 +5,6 @@ const open = ref(false);
 
 const { user, loggedIn } = useUserSession();
 
-// Dummy profile image
 const profileImg = 'https://i.pravatar.cc/32?img=1';
 
 const showDropdown = ref(false);
@@ -16,7 +15,6 @@ function logout() {
         method: 'POST'
     })
     .then(() => {
-        // Clear the session and redirect to the login page
         useUserSession().clear();
         navigateTo('/auth/sign-in');
     })
@@ -24,6 +22,8 @@ function logout() {
 
     showDropdown.value = false;
 }
+
+
 </script>
 
 <template>

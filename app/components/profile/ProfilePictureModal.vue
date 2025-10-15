@@ -69,7 +69,7 @@ const ProfilePictureUpdate = async () => {
             <UFileUpload
                 v-model="uploadedFile"
                 layout="list"
-                position="outside"
+                position="inside"
                 accept="image/*"
                 label="Drop your image here"
                 description="SVG, PNG, JPG or GIF (max. 2MB)"

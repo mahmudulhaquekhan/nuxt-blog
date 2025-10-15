@@ -5,6 +5,7 @@ import AddCommentModal from '~/components/blogs/comment/AddCommentModal.vue';
 import CreateBlogModal from '~/components/blogs/CreateBlogModal.vue';
 import useModal from '~/composables/ui/modal/modal';
 import Comment from '~/components/blogs/comment/Comment.vue';
+import DeleteCommentModal from '~/components/blogs/comment/DeleteCommentModal.vue';
 
 useHead({
     title: 'Dashboard - Blogs',
@@ -99,4 +100,6 @@ const addComment = useModal({
     <CreateBlogModal @created="() => refreshNuxtData()" />
 
     <AddCommentModal @created="() => refreshNuxtData()" />
+
+    <DeleteCommentModal />
 </template>

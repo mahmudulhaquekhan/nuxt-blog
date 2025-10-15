@@ -24,10 +24,6 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    console.log(forwardForm.get('name'));
-    console.log(forwardForm.get('email'));
-    console.log(forwardForm.get('profile_picture'));
-
     const res = await $fetch<{
         user: {
             name: string;

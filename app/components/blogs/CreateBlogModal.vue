@@ -17,6 +17,8 @@ const form = ref({
     description: ''
 });
 
+const uploadedFile = ref<File | null>(null);
+
 const errors = ref({
     title: null as string | null,
     description: null as string | null,
@@ -25,6 +27,7 @@ const errors = ref({
 const processing = ref(false);
 
 const submitForm = async () => {
+    if (!uploadedFile.value) return
     processing.value = true;
 
     errors.value = {
@@ -32,17 +35,21 @@ const submitForm = async () => {
         description: null,
     };
 
+    const formData = new FormData();
+    formData.append('title', form.value.title);
+    formData.append('description', form.value.description);
+    formData.append('image', uploadedFile.value);
+
     await $fetch('/api/blog/posts', {
         method: 'POST',
-        body: form.value
+        body: formData
     })
     .then(() => {
         modal.close();
         form.value = {
             title: '',
-            description: ''
+            description: '',
         };
-
         emit('created');
 
     })
@@ -73,7 +80,17 @@ const submitForm = async () => {
             @submit.prevent="submitForm"
             method="post"
             class="space-y-4"
-        >
+        >   
+            <UFileUpload
+                v-model="uploadedFile"
+                layout="list"
+                position="inside"
+                accept="image/*"
+                label="Drop your image here"
+                description="SVG, PNG, JPG or GIF (max. 2MB)"
+                class="w-96"
+                :ui="{ base: 'min-h-48' }"
+            />
             <div>
                 <label
                     for="title"

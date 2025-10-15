@@ -75,7 +75,6 @@ const submitForm = async () => {
         @close="modal.close()"
         title="Post a Comment"
     >
-        {{ postId }}
         <form
             @submit.prevent="submitForm"
             method="post"

@@ -14,4 +14,4 @@ definePageMeta({
     <NuxtLayout name="dashboard-default">
         <NuxtPage/>
     </NuxtLayout>
-</template>
+</template> 
