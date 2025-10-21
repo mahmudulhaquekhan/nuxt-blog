@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 useHead({
-    title: 'Home',
+    title: 'Blogs',
 });
 
 interface Post {
@@ -24,50 +24,10 @@ const { data, error, pending } = await useFetch<{
 
 <template>
     <p v-if="pending">Loading posts...</p>
-
-    <section v-else-if="data?.featured" class="p-2">
-        <div class="container mx-auto">
-            <NuxtLink :to="`/blogs/blog/${data.featured.id}`">
-                <div v-if="data.featured"
-                    class="relative rounded-xl overflow-hidden h-180 flex items-end text-white bg-no-repeat cursor-pointer"
-                    :style="{
-                        backgroundImage: data.featured.image_url
-                            ? `url(${data.featured.image_url})`
-                            : 'none',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }">
-                    <div class="absolute inset-0 bg-black/20"></div>
-
-                    <div class="relative z-10 px-8 pb-8 flex justify-between w-full items-center">
-                        <div class="max-w-xl">
-                            <h2 class="text-4xl font-semibold mb-2">{{ data.featured.title }}</h2>
-                            <p class="text-xl leading-tight">{{ data.featured.subtitle }}</p>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-2xl font-medium">
-                                {{ data.featured.author }}
-                            </p>
-                            <p class="text-xl">
-                                {{
-                                    new Date(data.featured.created_at).toLocaleDateString('en-UK', {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric'
-                                    })
-                                }} • 10 Mins Read
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </NuxtLink>
-        </div>
-    </section>
-
     <section v-if="data?.posts?.length" class="py-10 p-2">
         <div class="mx-auto container">
             <h2 class="text-4xl font-bold text-gray-900">
-                Blog
+                Blogs
             </h2>
             <p class="text-lg max-w-2xl leading-tight mb-8 pt-6">
                 Explore our latest articles, insights, and stories on a variety of topics. Stay informed and inspired
@@ -76,7 +36,7 @@ const { data, error, pending } = await useFetch<{
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <NuxtLink v-for="post in data.posts.slice(0, 3)" :key="post.id" :to="`/blogs/blog/${post.id}`"
+                <NuxtLink v-for="post in data.posts" :key="post.id" :to="`/blogs/blog/${post.id}`"
                     class="group block rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 bg-white">
                     <div>
                         <img v-if="post.image_url" :src="post.image_url" alt="Post image"
@@ -110,11 +70,6 @@ const { data, error, pending } = await useFetch<{
                     </div>
                 </NuxtLink>
             </div>
-
-            <NuxtLink to="/blogs"
-                class="cursor-pointer border border-gray-300 shadow-sm rounded-full py-3.5 px-7 w-52 flex justify-center items-center text-gray-900 font-semibold mx-auto transition-all duration-300 hover:bg-gray-100 mt-10">
-                View All
-            </NuxtLink>
         </div>
     </section>
 

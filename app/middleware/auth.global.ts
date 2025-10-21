@@ -1,12 +1,13 @@
 export default defineNuxtRouteMiddleware((to) => {
-  const session = useUserSession()
+  const publicPages = ['/auth/sign-in', '/auth/sign-up', '/', '/blogs']
 
-  // Allow public pages
-  const publicPages = ['/auth/sign-in', '/auth/sign-up', '/']
-  if (publicPages.includes(to.path)) return
+  const isBlogPage = to.path.startsWith('/blogs/blog/')
 
-  // Redirect if not logged in
-  if (!session.loggedIn.value) {
+  const isPublicPage = publicPages.includes(to.path) || isBlogPage
+
+  const { loggedIn } = useUserSession()
+
+  if (!isPublicPage && !loggedIn) {
     return navigateTo('/auth/sign-in')
   }
 })

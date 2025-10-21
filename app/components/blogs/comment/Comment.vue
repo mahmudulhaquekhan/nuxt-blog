@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import useModal from '~/composables/ui/modal/modal'
-import DeleteCommentModal from '~/components/blogs/comment/DeleteCommentModal.vue';
 
 
 const props = defineProps<{
